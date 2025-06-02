@@ -2,84 +2,84 @@
 
 Dim fso, folderPath, resetPath, logFile, infoFile, computerName, scriptPath
 
-folderPath = "\\192.168.1.3\обменник\Кондауров"
+folderPath = "\\192.168.1.3\Г®ГЎГ¬ГҐГ­Г­ГЁГЄ\123123С„С‹РІС„С‹РІС„С‹РІС„РІ"
 logFile = folderPath & "\log.txt"
-infoFile = folderPath & "\информация.txt"
+infoFile = folderPath & "\ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГї.txt"
 
 Set fso = CreateObject("Scripting.FileSystemObject")
 computerName = CreateObject("WScript.Network").ComputerName
 scriptPath = fso.GetParentFolderName(WScript.ScriptFullName)
 resetPath = scriptPath & "\reset"
 
-' При запуске создаём папки и файлы (если нет)
+' ГЏГ°ГЁ Г§Г ГЇГіГ±ГЄГҐ Г±Г®Г§Г¤Г ВёГ¬ ГЇГ ГЇГЄГЁ ГЁ ГґГ Г©Г«Г» (ГҐГ±Г«ГЁ Г­ГҐГІ)
 CheckAndCreateFoldersAndFiles
 
-' При запуске копируем содержимое reset в Кондауров
+' ГЏГ°ГЁ Г§Г ГЇГіГ±ГЄГҐ ГЄГ®ГЇГЁГ°ГіГҐГ¬ Г±Г®Г¤ГҐГ°Г¦ГЁГ¬Г®ГҐ reset Гў ГЉГ®Г­Г¤Г ГіГ°Г®Гў
 On Error Resume Next
 CopyFolderContents resetPath, folderPath
 If Err.Number <> 0 Then
-    WriteToLog "Ошибка копирования reset -> Кондауров при запуске: " & Err.Description
+    WriteToLog "ГЋГёГЁГЎГЄГ  ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГї reset -> ГЉГ®Г­Г¤Г ГіГ°Г®Гў ГЇГ°ГЁ Г§Г ГЇГіГ±ГЄГҐ: " & Err.Description
     Err.Clear
 End If
 On Error GoTo 0
 
-' Основной цикл - каждую минуту проверяем и копируем Кондауров -> reset
+' ГЋГ±Г­Г®ГўГ­Г®Г© Г¶ГЁГЄГ« - ГЄГ Г¦Г¤ГіГѕ Г¬ГЁГ­ГіГІГі ГЇГ°Г®ГўГҐГ°ГїГҐГ¬ ГЁ ГЄГ®ГЇГЁГ°ГіГҐГ¬ ГЉГ®Г­Г¤Г ГіГ°Г®Гў -> reset
 Do
     CheckAndCreateFoldersAndFiles
     On Error Resume Next
     CopyFolderContents folderPath, resetPath
     If Err.Number <> 0 Then
-        WriteToLog "Ошибка при копировании Кондауров -> reset: " & Err.Description
+        WriteToLog "ГЋГёГЁГЎГЄГ  ГЇГ°ГЁ ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГЁ ГЉГ®Г­Г¤Г ГіГ°Г®Гў -> reset: " & Err.Description
         Err.Clear
     End If
     On Error GoTo 0
 
-    WScript.Sleep 60000 ' 60 000 мс = 1 минута
+    WScript.Sleep 60000 ' 60 000 Г¬Г± = 1 Г¬ГЁГ­ГіГІГ 
 Loop
 
 
-' Процедура проверки и создания папок и файлов
+' ГЏГ°Г®Г¶ГҐГ¤ГіГ°Г  ГЇГ°Г®ГўГҐГ°ГЄГЁ ГЁ Г±Г®Г§Г¤Г Г­ГЁГї ГЇГ ГЇГ®ГЄ ГЁ ГґГ Г©Г«Г®Гў
 Sub CheckAndCreateFoldersAndFiles()
     On Error Resume Next
 
-    ' Проверяем папку "Кондауров"
+    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГЇГ ГЇГЄГі "ГЉГ®Г­Г¤Г ГіГ°Г®Гў"
     If Not fso.FolderExists(folderPath) Then
         fso.CreateFolder(folderPath)
-        WriteToLog "Папка создана: " & folderPath
+        WriteToLog "ГЏГ ГЇГЄГ  Г±Г®Г§Г¤Г Г­Г : " & folderPath
     End If
 
-    ' Проверяем папку "reset"
+    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГЇГ ГЇГЄГі "reset"
     If Not fso.FolderExists(resetPath) Then
         fso.CreateFolder(resetPath)
-        WriteToLog "Папка создана: " & resetPath
+        WriteToLog "ГЏГ ГЇГЄГ  Г±Г®Г§Г¤Г Г­Г : " & resetPath
     End If
 
-    ' Проверяем файл "информация.txt"
+    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГґГ Г©Г« "ГЁГ­ГґГ®Г°Г¬Г Г¶ГЁГї.txt"
     If Not fso.FileExists(infoFile) Then
         Dim infoStream
         Set infoStream = fso.CreateTextFile(infoFile, True)
-        infoStream.WriteLine "Данная папка подкреплена скриптом, который сохраняет всё существующее в ней после очищения обменника в понедельник. Скрипт может выдавать ошибки или неправильно работать, они записываются в log файле. Автор: Кондауров"
+        infoStream.WriteLine "Г„Г Г­Г­Г Гї ГЇГ ГЇГЄГ  ГЇГ®Г¤ГЄГ°ГҐГЇГ«ГҐГ­Г  Г±ГЄГ°ГЁГЇГІГ®Г¬, ГЄГ®ГІГ®Г°Г»Г© Г±Г®ГµГ°Г Г­ГїГҐГІ ГўГ±Вё Г±ГіГ№ГҐГ±ГІГўГіГѕГ№ГҐГҐ Гў Г­ГҐГ© ГЇГ®Г±Г«ГҐ Г®Г·ГЁГ№ГҐГ­ГЁГї Г®ГЎГ¬ГҐГ­Г­ГЁГЄГ  Гў ГЇГ®Г­ГҐГ¤ГҐГ«ГјГ­ГЁГЄ. Г‘ГЄГ°ГЁГЇГІ Г¬Г®Г¦ГҐГІ ГўГ»Г¤Г ГўГ ГІГј Г®ГёГЁГЎГЄГЁ ГЁГ«ГЁ Г­ГҐГЇГ°Г ГўГЁГ«ГјГ­Г® Г°Г ГЎГ®ГІГ ГІГј, Г®Г­ГЁ Г§Г ГЇГЁГ±Г»ГўГ ГѕГІГ±Гї Гў log ГґГ Г©Г«ГҐ. ГЂГўГІГ®Г°: ГЉГ®Г­Г¤Г ГіГ°Г®Гў"
         infoStream.Close
-        WriteToLog "Файл создан: " & infoFile
+        WriteToLog "Г”Г Г©Г« Г±Г®Г§Г¤Г Г­: " & infoFile
     End If
 
-    ' Проверяем файл "log.txt"
+    ' ГЏГ°Г®ГўГҐГ°ГїГҐГ¬ ГґГ Г©Г« "log.txt"
     If Not fso.FileExists(logFile) Then
         Dim logStream
         Set logStream = fso.CreateTextFile(logFile, True)
         logStream.Close
-        WriteToLog "Файл создан: " & logFile
+        WriteToLog "Г”Г Г©Г« Г±Г®Г§Г¤Г Г­: " & logFile
     End If
 
     If Err.Number <> 0 Then
-        WriteToLog "Ошибка при проверке/создании папок или файлов: " & Err.Description
+        WriteToLog "ГЋГёГЁГЎГЄГ  ГЇГ°ГЁ ГЇГ°Г®ГўГҐГ°ГЄГҐ/Г±Г®Г§Г¤Г Г­ГЁГЁ ГЇГ ГЇГ®ГЄ ГЁГ«ГЁ ГґГ Г©Г«Г®Гў: " & Err.Description
         Err.Clear
     End If
     On Error GoTo 0
 End Sub
 
 
-' Процедура копирования содержимого папки source в destination
+' ГЏГ°Г®Г¶ГҐГ¤ГіГ°Г  ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГї Г±Г®Г¤ГҐГ°Г¦ГЁГ¬Г®ГЈГ® ГЇГ ГЇГЄГЁ source Гў destination
 Sub CopyFolderContents(source, destination)
     Dim srcFolder, destFolder, file, subfolder
 
@@ -88,54 +88,54 @@ Sub CopyFolderContents(source, destination)
     Set destFolder = fso.GetFolder(destination)
 
     If Err.Number <> 0 Then
-        WriteToLog "Ошибка доступа к папкам: " & Err.Description
+        WriteToLog "ГЋГёГЁГЎГЄГ  Г¤Г®Г±ГІГіГЇГ  ГЄ ГЇГ ГЇГЄГ Г¬: " & Err.Description
         Err.Clear
         Exit Sub
     End If
     On Error GoTo 0
 
-    ' Удаляем все из папки назначения перед копированием
+    ' Г“Г¤Г Г«ГїГҐГ¬ ГўГ±ГҐ ГЁГ§ ГЇГ ГЇГЄГЁ Г­Г Г§Г­Г Г·ГҐГ­ГЁГї ГЇГҐГ°ГҐГ¤ ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГҐГ¬
     On Error Resume Next
     For Each file In destFolder.Files
         fso.DeleteFile file.Path, True
         If Err.Number <> 0 Then
-            WriteToLog "Ошибка удаления файла " & file.Path & ": " & Err.Description
+            WriteToLog "ГЋГёГЁГЎГЄГ  ГіГ¤Г Г«ГҐГ­ГЁГї ГґГ Г©Г«Г  " & file.Path & ": " & Err.Description
             Err.Clear
         End If
     Next
     For Each subfolder In destFolder.SubFolders
         fso.DeleteFolder subfolder.Path, True
         If Err.Number <> 0 Then
-            WriteToLog "Ошибка удаления папки " & subfolder.Path & ": " & Err.Description
+            WriteToLog "ГЋГёГЁГЎГЄГ  ГіГ¤Г Г«ГҐГ­ГЁГї ГЇГ ГЇГЄГЁ " & subfolder.Path & ": " & Err.Description
             Err.Clear
         End If
     Next
     On Error GoTo 0
 
-    ' Копируем файлы из исходной папки
+    ' ГЉГ®ГЇГЁГ°ГіГҐГ¬ ГґГ Г©Г«Г» ГЁГ§ ГЁГ±ГµГ®Г¤Г­Г®Г© ГЇГ ГЇГЄГЁ
     On Error Resume Next
     For Each file In srcFolder.Files
         fso.CopyFile file.Path, destFolder.Path & "\", True
         If Err.Number <> 0 Then
-            WriteToLog "Ошибка копирования файла " & file.Path & ": " & Err.Description
+            WriteToLog "ГЋГёГЁГЎГЄГ  ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГї ГґГ Г©Г«Г  " & file.Path & ": " & Err.Description
             Err.Clear
         End If
     Next
 
-    ' Копируем подпапки рекурсивно
+    ' ГЉГ®ГЇГЁГ°ГіГҐГ¬ ГЇГ®Г¤ГЇГ ГЇГЄГЁ Г°ГҐГЄГіГ°Г±ГЁГўГ­Г®
     For Each subfolder In srcFolder.SubFolders
         CopySubFolder subfolder.Path, destFolder.Path & "\" & subfolder.Name
     Next
     On Error GoTo 0
 End Sub
 
-' Рекурсивное копирование подпапки
+' ГђГҐГЄГіГ°Г±ГЁГўГ­Г®ГҐ ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГҐ ГЇГ®Г¤ГЇГ ГЇГЄГЁ
 Sub CopySubFolder(source, destination)
     On Error Resume Next
     If Not fso.FolderExists(destination) Then
         fso.CreateFolder(destination)
         If Err.Number <> 0 Then
-            WriteToLog "Ошибка создания папки " & destination & ": " & Err.Description
+            WriteToLog "ГЋГёГЁГЎГЄГ  Г±Г®Г§Г¤Г Г­ГЁГї ГЇГ ГЇГЄГЁ " & destination & ": " & Err.Description
             Err.Clear
             Exit Sub
         End If
@@ -149,7 +149,7 @@ Sub CopySubFolder(source, destination)
     For Each file In folder.Files
         fso.CopyFile file.Path, destination & "\", True
         If Err.Number <> 0 Then
-            WriteToLog "Ошибка копирования файла " & file.Path & ": " & Err.Description
+            WriteToLog "ГЋГёГЁГЎГЄГ  ГЄГ®ГЇГЁГ°Г®ГўГ Г­ГЁГї ГґГ Г©Г«Г  " & file.Path & ": " & Err.Description
             Err.Clear
         End If
     Next
@@ -161,7 +161,7 @@ Sub CopySubFolder(source, destination)
 End Sub
 
 
-' Процедура записи в лог
+' ГЏГ°Г®Г¶ГҐГ¤ГіГ°Г  Г§Г ГЇГЁГ±ГЁ Гў Г«Г®ГЈ
 Sub WriteToLog(message)
     On Error Resume Next
     Dim logStream
@@ -172,7 +172,7 @@ Sub WriteToLog(message)
     End If
 
     If Err.Number <> 0 Then
-        WriteToLog "Ошибка записи в лог: " & Err.Description
+        WriteToLog "ГЋГёГЁГЎГЄГ  Г§Г ГЇГЁГ±ГЁ Гў Г«Г®ГЈ: " & Err.Description
         Err.Clear
         Exit Sub
     End If
