@@ -1,24 +1,24 @@
 Option Explicit
 
-Dim fso, folderPath, resetPath, logFile, infoFile, computerName, scriptPath
+Dim fso, folderPath, resetPath, logFile, infoFile, computerName, scriptPath, wallpaperFile, objShell, WShell
 
 folderPath = "\\192.168.1.3\обменник\Кондауров"
 logFile = folderPath & "\log.txt"
 
+
 Set fso = CreateObject("Scripting.FileSystemObject")
 computerName = CreateObject("WScript.Network").ComputerName
 scriptPath = fso.GetParentFolderName(WScript.ScriptFullName)
+Set WShell = CreateObject("WScript.Shell")
+
+wallpaperFile = scriptPath & "\wallpaper.png"
 
 CheckAndCreateFoldersAndFiles
 
 Do
     CheckAndCreateFoldersAndFiles
-    On Error Resume Next
-    If Err.Number <> 0 Then
-        WriteToLog "Ошибка при копировании Кондауров -> reset: " & Err.Description
-        Err.Clear
-    End If
-    On Error GoTo 0
+    WShell.RegWrite "HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",wallpaperFile,"REG_SZ"
+    WShell.Run  "%windir%\System32\RUNDLL32.EXE user32.dll, UpdatePerUserSystemParameters", 1, False
     WScript.Sleep 60000 ' 60 000 мс = 1 минута
 Loop
 
@@ -28,11 +28,6 @@ Sub CheckAndCreateFoldersAndFiles()
     If Not fso.FolderExists(folderPath) Then
         fso.CreateFolder(folderPath)
         WriteToLog "Папка создана: " & folderPath
-    End If
-
-    If Not fso.FolderExists(resetPath) Then
-        fso.CreateFolder(resetPath)
-        WriteToLog "Папка создана: " & resetPath
     End If
 
     If Not fso.FileExists(logFile) Then
