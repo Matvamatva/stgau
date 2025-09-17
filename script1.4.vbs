@@ -11,10 +11,8 @@ computerName = CreateObject("WScript.Network").ComputerName
 scriptPath = fso.GetParentFolderName(WScript.ScriptFullName)
 resetPath = scriptPath & "\reset"
 
-' При запуске создаём папки и файлы (если нет)
 CheckAndCreateFoldersAndFiles
 
-' При запуске копируем содержимое reset в Кондауров
 On Error Resume Next
 CopyFolderContents resetPath, folderPath
 If Err.Number <> 0 Then
@@ -23,7 +21,6 @@ If Err.Number <> 0 Then
 End If
 On Error GoTo 0
 
-' Основной цикл - каждую минуту проверяем и копируем Кондауров -> reset
 Do
     CheckAndCreateFoldersAndFiles
     On Error Resume Next
@@ -34,27 +31,24 @@ Do
     End If
     On Error GoTo 0
 
-    WScript.Sleep 60000 ' 60 000 мс = 1 минута
+    WScript.Sleep 60000
 Loop
 
 
-' Процедура проверки и создания папок и файлов
 Sub CheckAndCreateFoldersAndFiles()
     On Error Resume Next
 
-    ' Проверяем папку "Кондауров"
+
     If Not fso.FolderExists(folderPath) Then
         fso.CreateFolder(folderPath)
         WriteToLog "Папка создана: " & folderPath
     End If
 
-    ' Проверяем папку "reset"
     If Not fso.FolderExists(resetPath) Then
         fso.CreateFolder(resetPath)
         WriteToLog "Папка создана: " & resetPath
     End If
 
-    ' Проверяем файл "информация.txt"
     If Not fso.FileExists(infoFile) Then
         Dim infoStream
         Set infoStream = fso.CreateTextFile(infoFile, True)
@@ -63,7 +57,6 @@ Sub CheckAndCreateFoldersAndFiles()
         WriteToLog "Файл создан: " & infoFile
     End If
 
-    ' Проверяем файл "log.txt"
     If Not fso.FileExists(logFile) Then
         Dim logStream
         Set logStream = fso.CreateTextFile(logFile, True)
@@ -78,8 +71,6 @@ Sub CheckAndCreateFoldersAndFiles()
     On Error GoTo 0
 End Sub
 
-
-' Процедура копирования содержимого папки source в destination
 Sub CopyFolderContents(source, destination)
     Dim srcFolder, destFolder, file, subfolder
 
@@ -94,7 +85,6 @@ Sub CopyFolderContents(source, destination)
     End If
     On Error GoTo 0
 
-    ' Удаляем все из папки назначения перед копированием
     On Error Resume Next
     For Each file In destFolder.Files
         fso.DeleteFile file.Path, True
@@ -112,7 +102,6 @@ Sub CopyFolderContents(source, destination)
     Next
     On Error GoTo 0
 
-    ' Копируем файлы из исходной папки
     On Error Resume Next
     For Each file In srcFolder.Files
         fso.CopyFile file.Path, destFolder.Path & "\", True
@@ -122,14 +111,12 @@ Sub CopyFolderContents(source, destination)
         End If
     Next
 
-    ' Копируем подпапки рекурсивно
     For Each subfolder In srcFolder.SubFolders
         CopySubFolder subfolder.Path, destFolder.Path & "\" & subfolder.Name
     Next
     On Error GoTo 0
 End Sub
 
-' Рекурсивное копирование подпапки
 Sub CopySubFolder(source, destination)
     On Error Resume Next
     If Not fso.FolderExists(destination) Then
@@ -160,8 +147,6 @@ Sub CopySubFolder(source, destination)
     On Error GoTo 0
 End Sub
 
-
-' Процедура записи в лог
 Sub WriteToLog(message)
     On Error Resume Next
     Dim logStream
@@ -181,3 +166,4 @@ Sub WriteToLog(message)
     logStream.Close
     On Error GoTo 0
 End Sub
+
