@@ -3,19 +3,17 @@ Dim objNetwork
 
 Set objNetwork = CreateObject("WScript.Network")
 
-username = InputBox("Введите имя пользователя:")
-password = InputBox("Введите пароль:")
+username = InputBox("Р’РІРµРґРёС‚Рµ РёРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ:")
+password = InputBox("Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ:")
 
-' Попытка подключения к ресурсу с использованием введенного пользователя и пароля
 On Error Resume Next
-objNetwork.MapNetworkDrive "Z:", "\\192.168.1.3\обменник", username, password
+objNetwork.MapNetworkDrive "Z:", "\\192.168.1.3\РѕР±РјРµРЅРЅРёРє", username, password
 
 If Err.Number = 0 Then
-    MsgBox "Аутентификация прошла успешно!"
-    ' Удаление сетевого привода
-    ' objNetwork.RemoveNetworkDrive "Z:"
+    MsgBox "РђСѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ РїСЂРѕС€Р»Р° СѓСЃРїРµС€РЅРѕ!"
 Else
-    MsgBox "Аутентификация не прошла! Ошибка: " & Err.Description
+    MsgBox "РђСѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ РЅРµ РїСЂРѕС€Р»Р°! РћС€РёР±РєР°: " & Err.Description
 End If
+
 
 On Error GoTo 0
