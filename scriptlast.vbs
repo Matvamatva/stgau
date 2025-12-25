@@ -19,7 +19,7 @@ Do
     CheckAndCreateFoldersAndFiles
     WShell.RegWrite "HKEY_CURRENT_USER\Control Panel\Desktop\Wallpaper",wallpaperFile,"REG_SZ"
     WShell.Run  "%windir%\System32\RUNDLL32.EXE user32.dll, UpdatePerUserSystemParameters", 1, False
-    WScript.Sleep 60000 ' 60 000 мс = 1 минута
+    WScript.Sleep 60000
 Loop
 
 Sub CheckAndCreateFoldersAndFiles()
