@@ -2,23 +2,24 @@ Const EVENT_LOG_PATH = "Security"
 Dim objWMIService, colEvents, objEvent
 Dim eventCode, EventUser, Domain, IPAddress
 
-eventCode = "4624" ' Код события для успешного входа
+eventCode = "4624"
 
-' Подключение к WMI
+
 Set objWMIService = GetObject("winmgmts:\\.\root\cimv2")
 Set colEvents = objWMIService.ExecQuery("SELECT * FROM Win32_NTLogEvent WHERE Logfile = '" & EVENT_LOG_PATH & "' AND EventCode = '" & eventCode & "'")
 
 If colEvents.Count = 0 Then
-    Wscript.Echo "Нет записей о входах в журнале."
+    Wscript.Echo "ГЌГҐГІ Г§Г ГЇГЁГ±ГҐГ© Г® ГўГµГ®Г¤Г Гµ Гў Г¦ГіГ°Г­Г Г«ГҐ."
 Else
     For Each objEvent In colEvents
-        EventUser = objEvent.InsertionStrings(5) ' Имя пользователя
-        Domain = objEvent.InsertionStrings(6) ' Домен
-        IPAddress = objEvent.InsertionStrings(18) ' IP-адрес
+        EventUser = objEvent.InsertionStrings(5)
+        Domain = objEvent.InsertionStrings(6)
+        IPAddress = objEvent.InsertionStrings(18) ' IP-Г Г¤Г°ГҐГ±
 
-        Wscript.Echo "Время: " & objEvent.TimeGenerated & vbCrLf & _
-                     "Имя пользователя: " & EventUser & vbCrLf & _
-                     "Домен: " & Domain & vbCrLf & _
-                     "IP-адрес: " & IPAddress
+        Wscript.Echo "Г‚Г°ГҐГ¬Гї: " & objEvent.TimeGenerated & vbCrLf & _
+                     "Г€Г¬Гї ГЇГ®Г«ГјГ§Г®ГўГ ГІГҐГ«Гї: " & EventUser & vbCrLf & _
+                     "Г„Г®Г¬ГҐГ­: " & Domain & vbCrLf & _
+                     "IP-Г Г¤Г°ГҐГ±: " & IPAddress
     Next
+
 End If
