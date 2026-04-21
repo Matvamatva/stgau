@@ -1,6 +1,6 @@
 Const EVENT_LOG_PATH = "Security"
 Dim objWMIService, colEvents, objEvent
-Dim eventCode, EventUser, Domain, IPAddress
+Dim eventCode, EventUser, Domain, IPAddress, stgau
 
 eventCode = "4624"
 
